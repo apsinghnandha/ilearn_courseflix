@@ -1,0 +1,38 @@
+FROM node:20-alpine AS frontend-build
+WORKDIR /frontend
+# Build frontend statically for the Pi deployment stage. We copy in
+# package.json first to utilize Docker build caching for npm installs.
+COPY frontend/package*.json ./
+# Use cache mount for faster npm installs
+RUN --mount=type=cache,target=/root/.npm npm ci
+COPY frontend/ .
+RUN npm run build
+
+# Use a multi-arch base image that supports ARM64 (Orange Pi)
+FROM python:3.11-slim
+WORKDIR /app
+
+# Install system dependencies including ffmpeg
+# Clean up apt cache to keep image small
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY backend/requirements.txt .
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY backend/ .
+COPY category.csv .
+# Copy frontend build to /app/static
+COPY --from=frontend-build /frontend/dist /app/static
+
+# Create data directory and set permissions
+# This ensures that when the container runs as a non-root user (e.g. 1000:100),
+# it has permission to write to /app/data and other app files.
+RUN mkdir -p /app/data && \
+    chown -R 1000:100 /app && \
+    chmod -R 755 /app/static
+
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

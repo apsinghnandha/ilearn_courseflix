@@ -1,0 +1,40 @@
+services:
+  ilearn:
+    image: ilearn/alpine
+    container_name: ilearn
+    restart: unless-stopped
+    environment:
+      - COURSES_PATH=/courses
+      - DATA_PATH=/app/data
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-100}
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount media (Read-only)
+      - /nas/nas/Media/Courses/Download_Masterclass/1:/courses:ro
+      # Persist data
+      - ilearn_data:/app/data
+
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/dma_heap:/dev/dma_heap
+      - /dev/mali0:/dev/mali0
+      - /dev/rga:/dev/rga
+      - /dev/mpp_service:/dev/mpp_service
+    group_add:
+      - "44" # video group usually
+    
+    # Network configuration
+    dns:
+      - ${DNS_SERVER23:-8.8.8.8}
+    networks:
+      vlan23:
+        ipv4_address: 192.168.23.62
+
+volumes:
+  ilearn_data:
+
+networks:
+  vlan23:
+    external: true

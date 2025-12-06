@@ -1,0 +1,13 @@
+node_modules
+frontend/node_modules
+backend/__pycache__
+.git
+.DS_Store
+*.pyc
+*.pyo
+env
+venv
+.env
+data
+_backup
+_commands

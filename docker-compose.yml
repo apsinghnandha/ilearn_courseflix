@@ -1,0 +1,22 @@
+services:
+  ilearn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ilearn/alpine
+    container_name: ilearn
+    restart: unless-stopped
+    ports:
+      - "80:8000"
+    volumes:
+      # Replace `/path/to/your/courses` with the actual location of your media on the host.
+      - /Users/ap/Developer/_mount/masterclass:/courses:ro
+      - ./data:/data
+      - ./category.csv:/app/category.csv
+      # Mount source code for faster development (hot-reload for backend if configured, or just skip rebuilds)
+      - ./backend:/app
+      - ./frontend/dist:/app/static
+    environment:
+      - COURSES_PATH=/courses
+      - DATA_PATH=/data
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
