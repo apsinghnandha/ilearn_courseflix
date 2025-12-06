@@ -14,8 +14,8 @@ services:
       - ./data:/data
       - ./config/category.csv:/app/category.csv
       # Mount source code for faster development (hot-reload for backend if configured, or just skip rebuilds)
-      # - ./backend:/app
-      # - ./build/frontend:/app/static
+      - ./backend:/app
+      - ./frontend/dist:/app/static
     environment:
       - COURSES_PATH=/courses
       - DATA_PATH=/data

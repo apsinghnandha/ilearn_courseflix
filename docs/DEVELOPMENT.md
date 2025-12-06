@@ -11,6 +11,13 @@ This document describes the project organization, conventions and common command
 - `docker-compose.yml` - Compose used to run the application locally
 - `Dockerfile` - Multi-stage build for production
 
+## Development Volume Mappings
+For efficient development with hot-reload:
+- `./backend:/app` - Mounts backend source code for Python hot-reload
+- `./frontend/dist:/app/static` - Mounts built frontend assets for serving static files
+- `./data:/data` - Persistent data directory
+- `./config/category.csv:/app/category.csv` - Configuration file
+
 ## Dev vs Production
 - Dev: Use the provided scripts and volumes to run in development mode with hot-reload.
 - Production: Build the image and run without mounting source folders.

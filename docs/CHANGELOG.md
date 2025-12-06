@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.2] - 2025-12-06
+### 🐛 Bug Fixes
+- **Docker Compose Volume Fix**: Corrected frontend volume mapping in `docker-compose.yml` from `./build/frontend:/app/static` to `./frontend/dist:/app/static` to properly mount the built frontend assets for development hot-reload.
+
 ## [1.9] - 2025-12-03
 ### 🚀 Major Improvements
 - **Logic Standardization**: Refactored entire codebase to use standard boolean logic. `is_available=True` now correctly represents "Available" status, eliminating previous inverted logic confusion.
