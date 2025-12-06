@@ -13,12 +13,12 @@ node_modules/
 
 # Build Output
 # Ignore the production build artifacts from the frontend
-frontend/dist/
+build/frontend/
 dist/
 build/
 frontend/node_modules/
-ilearn_pi_deploy/frontend/node_modules/
-ilearn_pi_deploy/frontend/dist/
+deploy/pi/frontend/node_modules/
+deploy/pi/frontend/dist/
 
 # Python Artifacts
 # Ignore compiled python files and cache directories
@@ -54,9 +54,9 @@ Thumbs.db
 # Application Data & Backups
 # Ignore runtime data, logs, and backup directories
 data/*
-!data/category.csv
+!config/category.csv
 _backup/
-ilearn_pi_deploy/
+deploy/pi/
 *.log
 *.sqlite
 *.db

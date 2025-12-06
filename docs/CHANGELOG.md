@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8] - 2025-12-03
+### 🚀 Major Improvements
+- **Directory Reorganization**: Restructured project layout following standard conventions for better maintainability and organization.
+  - Moved configuration files (`category.csv`) to `config/` directory
+  - Moved documentation (`README.md`) to `docs/` directory  
+  - Moved Docker files (`Dockerfile`, `docker-entrypoint.sh`) to `docker/` directory
+  - Moved build artifacts (`frontend/dist`) to `build/frontend/` directory
+  - Moved deployment artifacts (`ilearn_pi_deploy/`) to `deploy/pi/` directory
+  - Created `tests/` directory for future test files
+
+### 🛠️ Technical Enhancements
+- **Reference Updates**: Updated all file paths and references across Docker files, scripts, documentation, and configuration files to match the new directory structure.
+- **Script Enhancements**: Enhanced `manage.sh clear` command to include build artifact cleanup alongside data and Docker cleanup for complete system reset.
+- **Path Corrections**: Fixed missed references in legacy scripts (`start.sh`), ignore files (`.gitignore`, `.copilotignore`), and documentation for consistency.
+
+### 📚 Documentation
+- **Changelog Updates**: Added comprehensive v1.8 section documenting the directory reorganization and reference updates.
+
+## [1.7] - 2025-12-03
+### 🛠️ Technical Enhancements
+- **Script Improvements**: Enhanced `manage.sh` to support trailing 'logs' argument (e.g., `./scripts/manage.sh start rebuild logs`) for following container logs after start/rebuild operations, improving debugging workflow.
+
 ## [1.6] - 2025-12-03
 ### 🚀 Major Improvements
 - **Docker Entrypoint**: Implemented dedicated entrypoint script (`docker-entrypoint.sh`) for proper CMD/ENTRYPOINT separation, improving signal handling and container flexibility.

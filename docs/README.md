@@ -120,12 +120,12 @@ This section documents the development workflow and recent DevOps updates so fut
 
 ### Quick concepts and why they matter
 - Build vs runtime: `COPY` in `Dockerfile` creates a build-time snapshot. Runtime volume mounts (like `./backend:/app`) override those snapshots so the container uses the live host files.
-- Hot reload: The backend uses `uvicorn --reload` (set in `docker-compose.yml`) so code edits trigger an automatic restart in the running container. The frontend uses Vite for HMR or a build artifact in `/frontend/dist` for static serving.
+- Hot reload: The backend uses `uvicorn --reload` (set in `docker-compose.yml`) so code edits trigger an automatic restart in the running container. The frontend uses Vite for HMR or a build artifact in `/build/frontend` for static serving.
  - Build caching: `Dockerfile` uses BuildKit and `--mount=type=cache` for `npm`, `pip`, and `apt` to speed up rebuilds. Use `./scripts/start.sh rebuild` to enable BuildKit and re-run builds.
 - Node 20: The frontend build stage uses `node:20-alpine` to address Node 18 vulnerabilities and keep packages secure.
 
 ### Dev vs Production
-- Dev: Mount `./backend:/app` and `./frontend/dist:/app/static` in the Compose file. Backend reloads in place; frontend is served from the `dist` folder. Prefer running `vite dev` for HMR during UI work.
+- Dev: Mount `./backend:/app` and `./build/frontend:/app/static` in the Compose file. Backend reloads in place; frontend is served from the `dist` folder. Prefer running `vite dev` for HMR during UI work.
 - Production: Don't mount source folders; rely on the built image (the COPY snapshot) and run uvicorn without `--reload`.
 
 ### Quick start for development (recommended)
@@ -153,7 +153,7 @@ If you're using the container to serve the frontend `dist` folder, build locally
 cd frontend
 npm ci
 npm run build
-# Then refresh your browser to see updated assets; container serves files from ./frontend/dist
+# Then refresh your browser to see updated assets; container serves files from ./build/frontend
 ```
 
 ### Rebuild when required
@@ -176,7 +176,7 @@ docker compose up -d --build
 - The backend now automatically runs deduplication on startup to hide duplicate courses in the database. This mirrors the `Hide Duplicates` button in the UI and helps keep the library clean when the server is started or restarted.
 
 ### Optional: Running frontend dev server in Docker (not required)
-> You said you don't want a separate `frontend` service — that's fine. The `ilearn` service can continue to serve the built `dist` files that live in `./frontend/dist`. If you prefer to run the frontend dev server (Vite HMR) separately on your host for faster development, follow the local instructions below instead of running a `frontend` Compose service.
+> You said you don't want a separate `frontend` service — that's fine. The `ilearn` service can continue to serve the built `dist` files that live in `./build/frontend`. If you prefer to run the frontend dev server (Vite HMR) separately on your host for faster development, follow the local instructions below instead of running a `frontend` Compose service.
 
 ### Local dev alternatives (preferred if you do not want a separate `frontend` service)
 
@@ -194,7 +194,7 @@ cd frontend
 npm ci
 npm run watch:build
 ```
-This runs a file watcher (chokidar-cli) to run `npm run build` whenever files in `src/` change; because `./frontend/dist` is mounted into the container (`- ./frontend/dist:/app/static`), the backend serves the updated assets immediately without requiring a Docker image rebuild.
+This runs a file watcher (chokidar-cli) to run `npm run build` whenever files in `src/` change; because `./build/frontend` is mounted into the container (`- ./build/frontend:/app/static`), the backend serves the updated assets immediately without requiring a Docker image rebuild.
 
 3) If you want to run both locally (host dev server + docker backend), ensure the Vite dev server proxies `/api` to `http://localhost:8000` in `vite.config.js`.
 
@@ -212,7 +212,7 @@ You can also run a full clean-and-build which clears build artifacts and re-runs
 ```bash
 ./scripts/start.sh clean
 ```
-4. If testing frontend builds, run `npm ci && npm run build` to populate `/frontend/dist` (unless you use `vite dev`).
+4. If testing frontend builds, run `npm ci && npm run build` to populate `/build/frontend` (unless you use `vite dev`).
 
 ---
 

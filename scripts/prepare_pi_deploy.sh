@@ -18,7 +18,7 @@ REMOTE_PATH="/home/ap/zcloud/apps/docker-compose/build/ilearn"
 COMPOSE_FILE="3.2_media_manager.yml"
 PROJECT_NAME="3_2_media_manager"
 IMAGE_NAME="ilearn/alpine"
-DEPLOY_DIR="ilearn_pi_deploy"
+DEPLOY_DIR="deploy/pi"
 
 # Function to log errors and exit
 error_exit() {
@@ -35,7 +35,7 @@ rm -rf "$DEPLOY_DIR"/* || error_exit "Failed to clean $DEPLOY_DIR"
 
 # Check if Docker image exists
 if ! docker image inspect "$IMAGE_NAME" >/dev/null 2>&1; then
-    error_exit "Docker image $IMAGE_NAME does not exist. Please build it first with: docker build -t $IMAGE_NAME -f Dockerfile ."
+    error_exit "Docker image $IMAGE_NAME does not exist. Please build it first with: docker build -t $IMAGE_NAME -f docker/Dockerfile ."
 fi
 
 # Save the image to compressed tar.gz
@@ -46,12 +46,12 @@ fi
 echo "Docker image saved successfully."
 
 # Check if category.csv exists
-if [[ ! -f "./category.csv" ]]; then
-    error_exit "category.csv not found in current directory"
+if [[ ! -f "./config/category.csv" ]]; then
+    error_exit "category.csv not found in config directory"
 fi
 
 # Copy category.csv
-cp ./category.csv "$DEPLOY_DIR/category.csv" || error_exit "Failed to copy category.csv"
+cp ./config/category.csv "$DEPLOY_DIR/category.csv" || error_exit "Failed to copy category.csv"
 echo "category.csv copied successfully."
 
 # Remove old deployment files from remote server

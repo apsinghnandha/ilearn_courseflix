@@ -2,7 +2,7 @@ services:
   ilearn:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     image: ilearn/alpine
     container_name: ilearn
     restart: unless-stopped
@@ -12,10 +12,10 @@ services:
       # Replace `/path/to/your/courses` with the actual location of your media on the host.
       - /Users/ap/Developer/_mount/masterclass:/courses:ro
       - ./data:/data
-      - ./category.csv:/app/category.csv
+      - ./config/category.csv:/app/category.csv
       # Mount source code for faster development (hot-reload for backend if configured, or just skip rebuilds)
       - ./backend:/app
-      - ./frontend/dist:/app/static
+      - ./build/frontend:/app/static
     environment:
       - COURSES_PATH=/courses
       - DATA_PATH=/data

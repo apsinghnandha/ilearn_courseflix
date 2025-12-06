@@ -71,7 +71,7 @@ fi
 if [ "$MODE" == "clean" ]; then
     echo ""
     echo "🧹 Cleaning artifacts..."
-    rm -rf frontend/dist frontend/node_modules frontend/.vite || true
+    rm -rf build/frontend frontend/node_modules frontend/.vite || true
     find backend -type d -name "__pycache__" -exec rm -rf {} + || true
     find backend -type f -name "*.pyc" -delete || true
     echo "✅ Cleanup complete."
