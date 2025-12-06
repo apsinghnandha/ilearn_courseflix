@@ -1,21 +1,21 @@
 #!/bin/bash
 
-# manage.sh
+# ilearn.sh
 # ---------------------
 # Unified management script for iLearn CourseFlix.
 # Combines functionality from start.sh, stop.sh, status.sh, and clear.sh.
 #
 # Usage:
-#   ./scripts/manage.sh start               # Start"
-#   ./scripts/manage.sh start logs          # Logs"
-#   ./scripts/manage.sh dev                 # Dev server"
-#   ./scripts/manage.sh build               # Rebuild"
-#   ./scripts/manage.sh build logs
-#   ./scripts/manage.sh rebuild             # Rebuild no-cache"
-#   ./scripts/manage.sh rebuild logs
-#   ./scripts/manage.sh stop                # Stop"
-#   ./scripts/manage.sh status              # Status"
-#   ./scripts/manage.sh clear               # Clear all"
+#   ./scripts/ilearn.sh start               # Start"
+#   ./scripts/ilearn.sh start logs          # Logs"
+#   ./scripts/ilearn.sh dev                 # Dev server"
+#   ./scripts/ilearn.sh build               # Rebuild"
+#   ./scripts/ilearn.sh build logs
+#   ./scripts/ilearn.sh rebuild             # Rebuild no-cache"
+#   ./scripts/ilearn.sh rebuild logs
+#   ./scripts/ilearn.sh stop                # Stop"
+#   ./scripts/ilearn.sh status              # Status"
+#   ./scripts/ilearn.sh clear               # Clear all"
 
             
 
@@ -65,30 +65,40 @@ EXTRA="${3:-}"
 FOLLOW_LOGS="false"
 
 case "$COMMAND" in
-    start)
+    start|dev|build|rebuild)
         echo ""
         echo "====================================="
-        echo "iLearn CourseFlix - Start"
+        echo "iLearn CourseFlix - Manager"
         echo "====================================="
         echo ""
 
         check_docker
 
+        # Default mode is start, unless overridden
         MODE="start"
-        case "$SUBCOMMAND" in
-            build) MODE="build" ;;
-            rebuild) MODE="rebuild" ;;
-            clean) MODE="clean" ;;
-            dev) MODE="dev" ;;
-            logs)
-                # Allow `./scripts/manage.sh start logs`
-                MODE="start"
-                FOLLOW_LOGS="true"
-                ;;
-        esac
+        
+        # Handle top-level commands that map to modes
+        if [ "$COMMAND" == "dev" ]; then MODE="dev"; fi
+        if [ "$COMMAND" == "build" ]; then MODE="build"; fi
+        if [ "$COMMAND" == "rebuild" ]; then MODE="rebuild"; fi
 
-        # Allow `./scripts/manage.sh start <mode> logs` (e.g. start rebuild logs)
-        if [ "$EXTRA" == "logs" ]; then
+        # Handle subcommands if start was used
+        if [ "$COMMAND" == "start" ]; then
+            case "$SUBCOMMAND" in
+                build) MODE="build" ;;
+                rebuild) MODE="rebuild" ;;
+                clean) MODE="clean" ;;
+                dev) MODE="dev" ;;
+                logs)
+                    # Allow `./scripts/ilearn.sh start logs`
+                    MODE="start"
+                    FOLLOW_LOGS="true"
+                    ;;
+            esac
+        fi
+
+        # Check for logs argument in various positions
+        if [ "$SUBCOMMAND" == "logs" ] || [ "$EXTRA" == "logs" ]; then
             FOLLOW_LOGS="true"
         fi
 
@@ -170,16 +180,19 @@ case "$COMMAND" in
             echo "Access at: http://localhost:80"
             echo ""
             echo "Commands:"
-            echo "  ./scripts/manage.sh start           # Start"
-            echo "  ./scripts/manage.sh start logs      # Logs"
-            echo "  ./scripts/manage.sh dev             # Dev server"
-            echo "  ./scripts/manage.sh build           # Rebuild"
-            echo "  ./scripts/manage.sh build logs"
-            echo "  ./scripts/manage.sh rebuild         # Rebuild no-cache"
-            echo "  ./scripts/manage.sh rebuild logs"
-            echo "  ./scripts/manage.sh stop            # Stop"
-            echo "  ./scripts/manage.sh status          # Status"
-            echo "  ./scripts/manage.sh clear           # Clear all"
+            echo "  --- Core ---"
+            echo "  ./scripts/ilearn.sh start           # Start application"
+            echo "  ./scripts/ilearn.sh stop            # Stop application"
+            echo "  ./scripts/ilearn.sh status          # Check status"
+            echo ""
+            echo "  --- Development ---"
+            echo "  ./scripts/ilearn.sh dev             # Run frontend dev server (Vite)"
+            echo "  ./scripts/ilearn.sh start logs      # Start and follow logs"
+            echo ""
+            echo "  --- Maintenance ---"
+            echo "  ./scripts/ilearn.sh build           # Rebuild frontend & containers"
+            echo "  ./scripts/ilearn.sh rebuild         # Force rebuild (no cache)"
+            echo "  ./scripts/ilearn.sh clear           # DANGER: Clear all data & reset"
             echo ""
         fi
         ;;
@@ -216,7 +229,7 @@ case "$COMMAND" in
         else
             log_error "iLearn container is not running"
             echo ""
-            echo "To start: ./scripts/manage.sh start"
+            echo "To start: ./scripts/ilearn.sh start"
         fi
         echo ""
         ;;
@@ -262,16 +275,19 @@ case "$COMMAND" in
         echo "iLearn CourseFlix Management Script"
         echo ""
         echo "Commands:"
-        echo "  ./scripts/manage.sh start           # Start"
-        echo "  ./scripts/manage.sh start logs      # Logs"
-        echo "  ./scripts/manage.sh dev             # Dev server"
-        echo "  ./scripts/manage.sh build           # Rebuild"
-        echo "  ./scripts/manage.sh build logs"
-        echo "  ./scripts/manage.sh rebuild         # Rebuild no-cache"
-        echo "  ./scripts/manage.sh rebuild logs"
-        echo "  ./scripts/manage.sh stop            # Stop"
-        echo "  ./scripts/manage.sh status          # Status"
-        echo "  ./scripts/manage.sh clear           # Clear all"
+        echo "  --- Core ---"
+        echo "  ./scripts/ilearn.sh start           # Start application"
+        echo "  ./scripts/ilearn.sh stop            # Stop application"
+        echo "  ./scripts/ilearn.sh status          # Check status"
+        echo ""
+        echo "  --- Development ---"
+        echo "  ./scripts/ilearn.sh dev             # Run frontend dev server (Vite)"
+        echo "  ./scripts/ilearn.sh start logs      # Start and follow logs"
+        echo ""
+        echo "  --- Maintenance ---"
+        echo "  ./scripts/ilearn.sh build           # Rebuild frontend & containers"
+        echo "  ./scripts/ilearn.sh rebuild         # Force rebuild (no cache)"
+        echo "  ./scripts/ilearn.sh clear           # DANGER: Clear all data & reset"
         echo ""
         exit 0
         ;;

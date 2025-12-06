@@ -6,10 +6,10 @@ Note: Run these commands from the project root (`ilearn_courseflix/`)
 
 ### Quick Actions
 ```bash
-./scripts/start.sh          # Start the application
-./scripts/stop.sh           # Stop the application
-./scripts/status.sh         # Check status
-./scripts/clear.sh          # Clear data (WARNING: deletes DB)
+./scripts/ilearn.sh start   # Start the application
+./scripts/ilearn.sh stop    # Stop the application
+./scripts/ilearn.sh status  # Check status
+./scripts/ilearn.sh clear   # Clear data (WARNING: deletes DB)
 ./scripts/backup.sh         # Create backup
 ```
 
@@ -34,7 +34,7 @@ ssh -t -p 8888 ap@192.168.20.4 "sudo docker load -i /home/ap/zcloud/apps/docker-
 
 ## 1. Quick Start & Development
 
-The `start.sh` script is the main entry point for development and running the application. It handles frontend building and Docker management.
+The `ilearn.sh` script is the main entry point for development and running the application. It handles frontend building and Docker management.
 
 Make scripts executable first (if needed):
 ```bash
@@ -44,37 +44,37 @@ chmod +x scripts/*.sh
 ### Standard Start
 Builds frontend and starts the application in Docker.
 ```bash
-./scripts/start.sh
+./scripts/ilearn.sh start
 ```
 
 ### Development Mode
 Starts the Frontend Development Server (Vite) with Hot Module Replacement (HMR).
 ```bash
-./scripts/start.sh dev
+./scripts/ilearn.sh dev
 ```
 
 ### Build Options
 ```bash
 cd frontend && npm run build
 
-./scripts/clear.sh
-./scripts/start.sh
+./scripts/ilearn.sh clear
+./scripts/ilearn.sh start
 
 npm --prefix frontend run build
 
-cd frontend && npm run build && cd .. && ./scripts/start.sh clean
+cd frontend && npm run build && cd .. && ./scripts/ilearn.sh clear
 
 # Rebuild Docker image (with cache) and start
-./scripts/start.sh build
+./scripts/ilearn.sh build
 
 # Rebuild Docker image (NO cache) and start
-./scripts/start.sh rebuild
+./scripts/ilearn.sh rebuild
 
 # Deep clean (removes node_modules, dist, pycache), clean install dependencies, rebuild, and start
-./scripts/start.sh clean
+./scripts/ilearn.sh clear
 
 # Start and follow logs immediately
-./scripts/start.sh logs
+./scripts/ilearn.sh start logs
 ```
 
 ## 2. Management Scripts
@@ -82,19 +82,19 @@ cd frontend && npm run build && cd .. && ./scripts/start.sh clean
 ### Stop Application
 Stops the running Docker containers.
 ```bash
-./scripts/stop.sh
+./scripts/ilearn.sh stop
 ```
 
 ### Check Status
 Checks the status of the Docker containers.
 ```bash
-./scripts/status.sh
+./scripts/ilearn.sh status
 ```
 
 ### Clear Data
 **WARNING**: This will delete the database and scanned data.
 ```bash
-./scripts/clear.sh
+./scripts/ilearn.sh clear
 ```
 
 ### Backup

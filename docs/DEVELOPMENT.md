@@ -19,16 +19,15 @@ This document describes the project organization, conventions and common command
 See `COMMANDS.md` for a friendly reference for commonly used commands.
 
 ## Scripts
-- `./scripts/start.sh` - Main entry point.
-    - `./scripts/start.sh` - Build frontend & start Docker.
-    - `./scripts/start.sh dev` - Start Vite dev server (HMR).
-    - `./scripts/start.sh clean` - Deep clean & rebuild.
-    - `./scripts/start.sh rebuild` - Rebuild Docker image (no cache).
-    - `./scripts/start.sh logs` - Follow logs.
-- `./scripts/stop.sh` - Stop the app.
-- `./scripts/status.sh` - Check Docker status.
+- `./scripts/ilearn.sh` - Main management script.
+    - `./scripts/ilearn.sh start` - Build frontend & start Docker.
+    - `./scripts/ilearn.sh dev` - Start Vite dev server (HMR).
+    - `./scripts/ilearn.sh clear` - Deep clean & rebuild.
+    - `./scripts/ilearn.sh rebuild` - Rebuild Docker image (no cache).
+    - `./scripts/ilearn.sh start logs` - Follow logs.
+    - `./scripts/ilearn.sh stop` - Stop the app.
+    - `./scripts/ilearn.sh status` - Check Docker status.
 - `./scripts/backup.sh` - Create a timestamped backup in `../_backup`.
-- `./scripts/clear.sh` - Stop containers, prune Docker, and delete `data/`.
 - `./scripts/sync_only.sh` - Sync local files to remote server (no deploy).
 - `./scripts/sync_and_deploy.sh` - Sync local files and optionally run remote deploy steps.
 	- Flags:

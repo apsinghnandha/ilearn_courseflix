@@ -323,7 +323,7 @@ def get_course_cover(course_id: int, session: Session = Depends(get_session)):
 
 @app.get("/api/homepage")
 def get_homepage_data(session: Session = Depends(get_session)):
-    # Refactored: Filter Visible AND Available (is_available=True)
+    # Filter Visible AND Available (is_available=True)
     courses = session.exec(select(Course).where(Course.is_visible == True, Course.is_available == True)).all()
     
     # Load CSV to determine sort order
@@ -518,10 +518,10 @@ def manage_courses(
         query = query.where(Course.title == title)
         
     if is_available == "yes":
-        # Refactored: User requested "Available" -> is_available=True
+        # User requested "Available" -> is_available=True
         query = query.where(Course.is_available == True)
     elif is_available == "no":
-        # Refactored: User requested "Not Available" -> is_available=False
+        # User requested "Not Available" -> is_available=False
         query = query.where(Course.is_available == False)
         
     # Count total
@@ -547,7 +547,7 @@ def manage_courses(
                 filtered_courses.append(group[0])
             else:
                 # Sort to find the best one to keep
-                # Refactored: Sort by Available (True) first. Since False < True, we use 'not x.is_available' (False < True) 
+                # Sort by Available (True) first. Since False < True, we use 'not x.is_available' (False < True) 
                 # Wait: True (Available) should be first. 
                 # not True = False. not False = True. 
                 # So False comes before True. So Available comes first.
@@ -654,7 +654,7 @@ class CourseCreate(BaseModel):
     sub_category: str = "General"
     instructor: str = ""
     carousel_info: str = ""
-    # Refactored: Default to False (Not Available) for manual creation
+    # Default to False (Not Available) for manual creation
     is_available: bool = False
     is_visible: bool = True
 
@@ -689,7 +689,7 @@ def deduplicate_courses(session: Session = Depends(get_session)):
     count = 0
     for key, group in groups.items():
         if len(group) > 1:
-            # Refactored: Sort: Available (True) first. (not True = False, which comes first)
+            # Sort: Available (True) first. (not True = False, which comes first)
             group.sort(key=lambda x: (not x.is_available, not x.path, x.id))
             
             # Keep first visible, others invisible
@@ -914,7 +914,7 @@ def format_size(size):
 
 @app.get("/api/settings/stats")
 def get_library_stats(session: Session = Depends(get_session)):
-    # Refactored: Filter only available courses (is_available=True)
+    # Filter only available courses (is_available=True)
     raw_courses = session.exec(select(Course).where(Course.is_available == True)).all()
     
     # Deduplicate: Keep one per (title, instructor)

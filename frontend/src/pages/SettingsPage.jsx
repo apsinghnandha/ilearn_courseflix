@@ -618,7 +618,7 @@ export function SettingsPage() {
                                         {courses.map((course) => (
                                             <Table.Tr key={course.id}>
                                                 <Table.Td>
-                                                    {/* Refactored: Show tick if is_available is true */}
+                                                    {/* Show tick if is_available is true */}
                                                     {course.is_available && <Text c="green">✓</Text>}
                                                 </Table.Td>
                                                 <Table.Td>

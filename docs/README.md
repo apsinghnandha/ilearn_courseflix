@@ -16,13 +16,12 @@ iLearn is a self-hosted media server designed to manage and stream educational c
 - **Multi-Category Support**: A single course (identified by Title + Instructor) can appear in multiple categories. The `scanner.py` aggregates these into a JSON list stored in the `all_categories` column in the database.
 - **Sync Process**: On startup (or manual trigger), `scanner.py` reads `category.csv` and updates the database.
 
-### 2. Logic Inversion (User Request)
-**IMPORTANT**: The user requested specific logic that is "inverted" compared to standard naming conventions. **DO NOT FIX THIS** unless explicitly asked.
+### 2. Logic Standardized (Refactored)
 - **Availability**:
-    - **UI "Available" (Yes)** maps to **DB `is_available = False`**.
-    - **UI "Not Available" (No)** maps to **DB `is_available = True`**.
-- **Green Ticks**: In the Course Manager UI, a green tick `✓` is shown when `is_available` is **False**.
-- **Homepage Filtering**: The homepage only displays courses where `is_visible=True` AND `is_available=False` (which means "Available" to the user).
+    - **UI "Available" (Yes)** maps to **DB `is_available = True`**.
+    - **UI "Not Available" (No)** maps to **DB `is_available = False`**.
+- **Green Ticks**: In the Course Manager UI, a green tick `✓` is shown when `is_available` is **True**.
+- **Homepage Filtering**: The homepage displays courses where `is_visible=True` AND `is_available=True`.
 
 ### 3. Hierarchical Structure
 - **Category -> Sub-Category -> Course**.
@@ -70,7 +69,6 @@ iLearn is a self-hosted media server designed to manage and stream educational c
     ```
 
 ## Troubleshooting
-- **"Logic is upside down"**: Remember the inverted logic for `is_available`.
 - **Missing Courses**: Check `category.csv` for exact Title/Instructor matches. The system uses these to link CSV rows to folders.
 - **Logs**: Check container logs (`docker logs ilearn`) for scanner errors or CSV sync issues.
  - **Export / Backup file downloads**: The UI now prompts you to choose a location to save exported CSV files and backup ZIPs (uses the browser's File System Access API when available, otherwise falls back to the browser's Save dialog). If the browser automatically downloads to a default location, check your browser's download settings or run `npm run dev` and download from there.
@@ -121,7 +119,7 @@ This section documents the development workflow and recent DevOps updates so fut
 ### Quick concepts and why they matter
 - Build vs runtime: `COPY` in `Dockerfile` creates a build-time snapshot. Runtime volume mounts (like `./backend:/app`) override those snapshots so the container uses the live host files.
 - Hot reload: The backend uses `uvicorn --reload` (set in `docker-compose.yml`) so code edits trigger an automatic restart in the running container. The frontend uses Vite for HMR or a build artifact in `/build/frontend` for static serving.
- - Build caching: `Dockerfile` uses BuildKit and `--mount=type=cache` for `npm`, `pip`, and `apt` to speed up rebuilds. Use `./scripts/start.sh rebuild` to enable BuildKit and re-run builds.
+ - Build caching: `Dockerfile` uses BuildKit and `--mount=type=cache` for `npm`, `pip`, and `apt` to speed up rebuilds. Use `./scripts/ilearn.sh build` to enable BuildKit and re-run builds.
 - Node 20: The frontend build stage uses `node:20-alpine` to address Node 18 vulnerabilities and keep packages secure.
 
 ### Dev vs Production
@@ -135,7 +133,7 @@ node -v && npm -v
 ```
 2. If you plan to change the frontend UI with live reload:
 ```bash
-./scripts/start.sh dev
+./scripts/ilearn.sh dev
 ```
 ```
 That runs Vite's dev server with HMR on `5173`. You can configure a `frontend` service in `docker-compose.dev.yml` to run this in Docker.
@@ -164,7 +162,7 @@ Rebuild the container when you change build-time things:
 
 Use this to rebuild:
 ```bash
-./scripts/start.sh rebuild
+./scripts/ilearn.sh build
 docker compose up -d --build
 ```
 
@@ -205,12 +203,12 @@ Reminder: The Docker `frontend` service (dev in container) is optional. Not runn
 2. Update host volume paths in `docker-compose.yml` to match your environment (e.g., media folder `/courses` and data persistence for `/app/data`).
 3. Build once to create a validated image:
 ```bash
-./scripts/start.sh rebuild
+./scripts/ilearn.sh build
 docker compose up -d
 ```
 You can also run a full clean-and-build which clears build artifacts and re-runs the frontend build before rebuilding images:
 ```bash
-./scripts/start.sh clean
+./scripts/ilearn.sh clear
 ```
 4. If testing frontend builds, run `npm ci && npm run build` to populate `/build/frontend` (unless you use `vite dev`).
 

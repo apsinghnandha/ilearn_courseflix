@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9] - 2025-12-03
+### 🚀 Major Improvements
+- **Logic Standardization**: Refactored entire codebase to use standard boolean logic. `is_available=True` now correctly represents "Available" status, eliminating previous inverted logic confusion.
+- **Script Consolidation**: Unified all management operations into a single `ilearn.sh` script (formerly `manage.sh`), simplifying the developer experience.
+
+### 🛠️ Technical Enhancements
+- **Cleanup**: Removed redundant legacy scripts (`start.sh`, `stop.sh`, `status.sh`, `clear.sh`) to reduce clutter and maintenance burden.
+- **Frontend Updates**: Updated React components to align with the new standard availability logic.
+
+### 📚 Documentation
+- **Updated Guides**: Refreshed README and documentation to reference the new `ilearn.sh` script and explain the standardized logic.
+
 ## [1.8] - 2025-12-03
 ### 🚀 Major Improvements
 - **Directory Reorganization**: Restructured project layout following standard conventions for better maintainability and organization.

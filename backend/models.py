@@ -24,7 +24,7 @@ class Course(SQLModel, table=True):
     cover_path: Optional[str] = None
     total_expected: int = 0
     is_visible: bool = Field(default=True)
-    # Refactored: Default is False (Not Available). True means Available.
+    # Default is False (Not Available). True means Available.
     is_available: bool = Field(default=False)
     carousel_info: Optional[str] = None
     all_categories: str = Field(default="[]") # JSON list of dicts: [{"category": "...", "sub_category": "..."}]
