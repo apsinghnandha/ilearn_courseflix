@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6] - 2025-12-03
+### 🚀 Major Improvements
+- **Docker Entrypoint**: Implemented dedicated entrypoint script (`docker-entrypoint.sh`) for proper CMD/ENTRYPOINT separation, improving signal handling and container flexibility.
+- **Error Handling**: Enhanced `prepare_pi_deploy.sh` with comprehensive error checking, pre-validations, and failure-safe operations to prevent partial deployments.
+- **Image Embedding**: Moved `VERSION` file into the Docker image instead of host mounting for better portability and consistency.
+
+### 🛠️ Technical Enhancements
+- **Linter Compliance**: Fixed `JSONArgsRecommended` warning by using exec-form CMD arrays and entrypoint script, ensuring proper OS signal handling.
+- **Script Robustness**: Added strict bash options (`set -euo pipefail`), custom error functions, and cleanup traps in deployment scripts.
+- **Configuration Variables**: Centralized remote deployment settings in `prepare_pi_deploy.sh` for easier maintenance.
+
+### 📚 Documentation
+- **Changelog Updates**: Added detailed v1.6 section documenting Docker and deployment improvements.
+
 ## [1.5] - 2025-12-03
 ### 🚀 Major Improvements
 - **Docker Optimization**: Switched to Alpine Linux base image, reducing size by ~60% (from ~234MB to ~92MB) and build time by ~65%.
@@ -19,7 +33,7 @@ All notable changes to this project will be documented in this file.
 - **Command Reference**: Reorganized `COMMANDS.md` with most-used commands at the top for quick access.
 - **Changelog**: Standardized naming (e.g., `VERSION` → `version.txt`, `CHANGELOG.md` → `changelog.md`).
 
-### 🐛 Bug Fixes
+### � Bug Fixes
 - **Logging Permissions**: Resolved "Permission denied" errors for `/app/data/ilearn.log` on Pi deployments.
 - **Volume Removal**: Corrected volume name in Pi cleanup commands (`ilearn_data` instead of `ilearn`).
 
