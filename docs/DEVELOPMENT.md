@@ -22,6 +22,9 @@ For efficient development with hot-reload:
 - Dev: Use the provided scripts and volumes to run in development mode with hot-reload.
 - Production: Build the image and run without mounting source folders.
 
+## Build Optimization
+The frontend build is optimized for performance with code splitting enabled. Large vendor libraries (Mantine UI, React, Icons) are separated into dedicated chunks to reduce initial bundle sizes and improve loading times.
+
 ## Commands
 See `COMMANDS.md` for a friendly reference for commonly used commands.
 

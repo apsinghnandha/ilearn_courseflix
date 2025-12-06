@@ -6,6 +6,15 @@ export default defineConfig({
   root: '.',
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          mantine: ['@mantine/core', '@mantine/hooks', '@mantine/carousel'],
+          react: ['react', 'react-dom', 'react-router-dom'],
+          icons: ['tabler-icons-react'],
+        },
+      },
+    },
   },
   server: {
     proxy: {

@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### 🐛 Bug Fixes
 - **Docker Compose Volume Fix**: Corrected frontend volume mapping in `docker-compose.yml` from `./build/frontend:/app/static` to `./frontend/dist:/app/static` to properly mount the built frontend assets for development hot-reload.
 
+### 🛠️ Technical Enhancements
+- **Build Optimization**: Implemented code splitting in Vite configuration to reduce bundle sizes and improve loading performance by separating vendor libraries (Mantine, React, Icons) into dedicated chunks.
+
 ## [1.9] - 2025-12-03
 ### 🚀 Major Improvements
 - **Logic Standardization**: Refactored entire codebase to use standard boolean logic. `is_available=True` now correctly represents "Available" status, eliminating previous inverted logic confusion.

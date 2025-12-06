@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Stack, Title, Group, TextInput, Button, Divider, Card, Text, ActionIcon, MultiSelect } from '@mantine/core';
+import { Stack, Title, Group, TextInput, Button, Divider, Card, Text, ActionIcon, MultiSelect, useMantineTheme } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { ArrowUp, ArrowDown, Trash } from 'tabler-icons-react';
 
 export function NavbarManager() {
+    const theme = useMantineTheme();
+    const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
     const [config, setConfig] = useState([]);
     const [categories, setCategories] = useState([]);
     const [newGroup, setNewGroup] = useState("");
@@ -71,19 +74,20 @@ export function NavbarManager() {
     return (
         <Stack>
             <Title order={4}>Navbar Configuration</Title>
-            <Group>
+            <Group wrap="wrap">
                 <TextInput 
                     placeholder="New Group Name" 
                     value={newGroup} 
-                    onChange={(e) => setNewGroup(e.target.value)} 
+                    onChange={(e) => setNewGroup(e.target.value)}
+                    style={{ flex: isMobile ? '1 1 100%' : '1' }}
                 />
-                <Button onClick={addGroup}>Add Group</Button>
+                <Button onClick={addGroup} style={{ flex: isMobile ? '1 1 100%' : '0 0 auto' }}>Add Group</Button>
             </Group>
             <Divider my="sm" />
             {config.map((group, index) => (
                 <Card key={group.name} withBorder mb="sm" style={{ background: '#1A1B1E', borderColor: '#333' }}>
-                    <Group justify="space-between" mb="xs">
-                        <Group>
+                    <Group justify="space-between" mb="xs" wrap="wrap">
+                        <Group wrap="wrap">
                             <Text fw={700} c="white">{group.name}</Text>
                             <ActionIcon variant="subtle" color="gray" onClick={() => moveGroup(index, 'up')} disabled={index === 0}><ArrowUp size={16} /></ActionIcon>
                             <ActionIcon variant="subtle" color="gray" onClick={() => moveGroup(index, 'down')} disabled={index === config.length - 1}><ArrowDown size={16} /></ActionIcon>
