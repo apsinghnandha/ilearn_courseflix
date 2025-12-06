@@ -6,10 +6,13 @@ All notable changes to this project will be documented in this file.
 ### 🚀 Major Improvements
 - **Logic Standardization**: Refactored entire codebase to use standard boolean logic. `is_available=True` now correctly represents "Available" status, eliminating previous inverted logic confusion.
 - **Script Consolidation**: Unified all management operations into a single `ilearn.sh` script (formerly `manage.sh`), simplifying the developer experience.
+- **Dependency Security Updates**: Updated all Python and frontend dependencies to latest stable versions for improved security and performance.
 
 ### 🛠️ Technical Enhancements
 - **Cleanup**: Removed redundant legacy scripts (`start.sh`, `stop.sh`, `status.sh`, `clear.sh`) to reduce clutter and maintenance burden.
 - **Frontend Updates**: Updated React components to align with the new standard availability logic.
+- **Python Dependencies**: Pinned all backend dependencies to exact versions (FastAPI 0.104.1, SQLModel 0.0.14, etc.) for reproducible builds.
+- **Frontend Dependencies**: Updated Vite to 5.4.21, React Router to 6.28.0, Mantine to 7.15.0, and other dependencies for security and performance improvements.
 
 ### 📚 Documentation
 - **Updated Guides**: Refreshed README and documentation to reference the new `ilearn.sh` script and explain the standardized logic.
